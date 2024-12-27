@@ -1,0 +1,60 @@
+# Node modules
+node_modules/
+
+# React Native packager cache
+/.metro/
+
+# Android build directories and artifacts
+android/.gradle/
+android/gradlew.bat
+android/app/build/
+android/app/.cxx/
+android/build/
+android/gradle/wrapper/gradle-wrapper.jar
+android/gradle/wrapper/gradle-wrapper.properties
+
+# iOS build artifacts
+ios/build/
+ios/Pods/
+ios/.generated/
+
+# Expo directories
+.expo/
+.expo-shared/
+
+# Ruby (Bundler) binaries
+vendor/bundle/
+
+# Logs and temporary files
+*.log
+*.swp
+*.swo
+*.tmp
+
+# IDE configurations
+.idea/
+.vscode/
+
+# Xcode-specific files
+xcuserdata/
+ios/.xcode.env
+ios/.xcode.env.local
+
+# npm/yarn debug logs
+npm-debug.log
+yarn-error.log
+
+# OS-specific files
+.DS_Store
+
+# Ignore derived data and Xcode-specific files
+DerivedData/
+*.xcuserstate
+*.hmap
+*.ipa
+
+# Pods directory (CocoaPods)
+Pods/
+
+# Build directories
+build/
