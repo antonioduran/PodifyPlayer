@@ -1,11 +1,11 @@
-import { FC, ReactNode } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import {FC, ReactNode} from 'react';
+import {SafeAreaView, StyleSheet} from 'react-native';
 
 interface Props {
   children: ReactNode;
 }
 
-const AppContainer: FC<Props> = ({ children }) => {
+const AppCotnainer: FC<Props> = ({children}) => {
   return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
 };
 
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppContainer;
+export default AppCotnainer;
