@@ -1,19 +1,19 @@
-import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
-import Loader from '@ui/Loader';
-import {getFromAsyncStorage, Keys} from '@utils/asyncStorage';
-import colors from '@utils/colors';
-import {FC, useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import client from 'src/api/client';
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import Loader from "@ui/Loader";
+import { getFromAsyncStorage, Keys } from "@utils/asyncStorage";
+import colors from "@utils/colors";
+import { FC, useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import client from "src/api/client";
 import {
   getAuthState,
   updateBusyState,
   updateLoggedInState,
   updateProfile,
-} from 'src/store/auth';
-import AuthNavigator from './AuthNavigator';
-import TabNavigator from './TabNavigator';
+} from "src/store/auth";
+import AuthNavigator from "./AuthNavigator";
+import TabNavigator from "./TabNavigator";
 
 interface Props {}
 
@@ -26,8 +26,8 @@ const AppTheme = {
   },
 };
 
-const AppNavigator: FC<Props> = props => {
-  const {loggedIn, busy} = useSelector(getAuthState);
+const AppNavigator: FC<Props> = (props) => {
+  const { loggedIn, busy } = useSelector(getAuthState);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -39,16 +39,16 @@ const AppNavigator: FC<Props> = props => {
           return dispatch(updateBusyState(false));
         }
 
-        const {data} = await client.get('/auth/is-auth', {
+        const { data } = await client.get("/auth/is-auth", {
           headers: {
-            Authorization: 'Bearer ' + token,
+            Authorization: "Bearer " + token,
           },
         });
 
         dispatch(updateProfile(data.profile));
         dispatch(updateLoggedInState(true));
       } catch (error) {
-        console.log('Auth error: ', error);
+        console.log("Auth error: ", error);
       }
 
       dispatch(updateBusyState(false));
@@ -64,10 +64,11 @@ const AppNavigator: FC<Props> = props => {
           style={{
             ...StyleSheet.absoluteFillObject,
             backgroundColor: colors.OVERLAY,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
             zIndex: 1,
-          }}>
+          }}
+        >
           <Loader />
         </View>
       ) : null}
