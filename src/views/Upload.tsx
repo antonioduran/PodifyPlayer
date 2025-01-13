@@ -1,9 +1,11 @@
 import CategorySelector from '@components/CategorySelector';
 import FileSelector from '@components/FileSelector';
 import AppButton from '@ui/AppButton';
+import Progress from '@ui/Progress';
 import {getFromAsyncStorage, Keys} from '@utils/asyncStorage';
 import {categories} from '@utils/categories';
 import colors from '@utils/colors';
+import {mapRange} from '@utils/math';
 import {FC, useState} from 'react';
 import {
   View,
@@ -30,6 +32,8 @@ const defaultForm: FormFields = {
   title: '',
   category: '',
   about: '',
+  file: undefined,
+  poster: undefined,
 };
 
 const audioInfoSchema = yup.object().shape({
@@ -55,8 +59,11 @@ interface Props {}
 const Upload: FC<Props> = props => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [audioInfo, setAudioInfo] = useState({...defaultForm});
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [busy, setBusy] = useState(false);
 
   const handleUpload = async () => {
+    setBusy(true);
     try {
       const finalData = await audioInfoSchema.validate(audioInfo);
 
@@ -87,6 +94,22 @@ const Upload: FC<Props> = props => {
           Authorization: 'Bearer ' + token,
           'Content-Type': 'multipart/form-data;',
         },
+        onUploadProgress(progressEvent) {
+          const uploaded = mapRange({
+            inputMin: 0,
+            inputMax: progressEvent.total || 0,
+            outputMin: 0,
+            outputMax: 100,
+            inputValue: progressEvent.loaded,
+          });
+
+          if (uploaded >= 100) {
+            setAudioInfo({...defaultForm});
+            setBusy(false);
+          }
+
+          setUploadProgress(Math.floor(uploaded));
+        },
       });
 
       console.log(data);
@@ -95,6 +118,7 @@ const Upload: FC<Props> = props => {
         console.log('Validation error: ', error.message);
       else console.log(error.response.data);
     }
+    setBusy(false);
   };
 
   return (
@@ -139,6 +163,7 @@ const Upload: FC<Props> = props => {
           onChangeText={text => {
             setAudioInfo({...audioInfo, title: text});
           }}
+          value={audioInfo.title}
         />
 
         <Pressable
@@ -159,6 +184,7 @@ const Upload: FC<Props> = props => {
           onChangeText={text => {
             setAudioInfo({...audioInfo, about: text});
           }}
+          value={audioInfo.about}
         />
 
         <CategorySelector
@@ -176,9 +202,16 @@ const Upload: FC<Props> = props => {
           }}
         />
 
-        <View style={{marginBottom: 20}} />
+        <View style={{marginVertical: 20}}>
+          {busy ? <Progress progress={uploadProgress} /> : null}
+        </View>
 
-        <AppButton borderRadius={7} title="Submit" onPress={handleUpload} />
+        <AppButton
+          busy={busy}
+          borderRadius={7}
+          title="Submit"
+          onPress={handleUpload}
+        />
       </View>
     </ScrollView>
   );
