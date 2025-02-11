@@ -1,8 +1,5 @@
-import {
-  /*createSelector,*/ createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
-import { RootState } from ".";
+import {/*createSelector,*/createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {RootState} from '.';
 
 export interface UserProfile {
   id: string;
@@ -27,24 +24,28 @@ const initialState: AuthState = {
 };
 
 const slice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
-    updateProfile(AuthState, { payload }: PayloadAction<UserProfile | null>) {
-      AuthState.profile = payload;
+    updateProfile(authState, {payload}: PayloadAction<UserProfile | null>) {
+      authState.profile = payload;
     },
-    updateLoggedInState(AuthState, { payload }) {
-      AuthState.loggedIn = payload;
+    updateLoggedInState(authState, {payload}) {
+      authState.loggedIn = payload;
     },
-    updateBusyState(AuthState, { payload }: PayloadAction<boolean>) {
-      AuthState.busy = payload;
+    updateBusyState(authState, {payload}: PayloadAction<boolean>) {
+      authState.busy = payload;
     },
   },
 });
 
-export const { updateLoggedInState, updateProfile, updateBusyState } =
+export const {updateLoggedInState, updateProfile, updateBusyState} =
   slice.actions;
 
 export const getAuthState = (state: RootState) => state.auth; // Do not remove this
+// export const getAuthState = createSelector(
+//   (state: RootState) => state,
+//   ({auth}) => auth,
+// );
 
 export default slice.reducer;
